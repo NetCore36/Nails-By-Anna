@@ -1,0 +1,268 @@
+# 🚀 Guide de Démarrage - Nails by Anna
+
+Bienvenue ! Ce guide te montre comment bien démarrer avec l'app.
+
+---
+
+## ⚡ Installation (2 minutes)
+
+### Étape 1 : Télécharge le fichier
+- Clique sur le fichier `index.html`
+- Bouton "Download" ou "Télécharger"
+- Sauvegarde-le sur ton ordinateur
+
+### Étape 2 : Ouvre-le
+**Sur ordinateur :**
+- Double-clique sur `index.html`
+- Ton navigateur s'ouvre automatiquement
+
+**Sur téléphone/tablet :**
+- Transfère le fichier sur ton appareil
+- Ouvre-le avec le navigateur par défaut
+- L'app se charge immédiatement ✅
+
+### Étape 3 : Crie ton premier client
+1. Clique sur l'onglet **👥 Clients**
+2. Clique sur **+ Ajouter un client**
+3. Remplis :
+   - Nom
+   - Téléphone
+   - Email (optionnel)
+4. Clique **Créer** → Le client est sauvegardé automatiquement
+
+---
+
+## 🎯 Premières Actions
+
+### 1️⃣ Personnalise l'app
+1. Va sur **⚙️ Paramètres**
+2. Change le nom de l'app (ex : "Studio Nails Lara")
+3. C'est personnalisé pour toi !
+
+### 2️⃣ Ajoute tes prestations
+1. Va sur **💇 Prestations**
+2. Clique **+ Ajouter une prestation**
+3. Ajoute quelques services clés :
+   - Pose French
+   - Vernis semi-permanent
+   - Décoration/Art
+   - Etc.
+
+### 3️⃣ Enregistre une première prestation réalisée
+1. Va sur **💇 Prestations**
+2. Clique **+ Enregistrer une prestation**
+3. Sélectionne :
+   - Le client
+   - La prestation
+   - Le prix (auto ou custom)
+4. Clique **Enregistrer**
+
+### 4️⃣ Regarde ton Dashboard
+1. Va sur **📊 Dashboard**
+2. Tu vois tes KPIs en temps réel
+3. Tes données apparaissent instantanément
+
+---
+
+## 🔑 Les 5 Onglets Principaux
+
+### 📊 Dashboard
+**Quoi ?** Vue d'ensemble de ton activité  
+**Quand ?** À chaque fois que tu veux voir tes stats  
+**Actions :**
+- Filtre par période (jour, semaine, mois)
+- Vois tes graphiques
+- Vérifiez ton CA
+
+### 👥 Clients
+**Quoi ?** Ton répertoire de clients  
+**Quand ?** Pour ajouter un contact, voir son historique  
+**Actions :**
+- Ajoute un client
+- Consulte son historique de prestations
+- Modifie ses infos
+- Cherche par nom
+
+### 💇 Prestations
+**Quoi ?** Ton catalogue de services + devis  
+**Quand ?** Pour gérer tes services et créer des devis  
+**Actions :**
+- Ajoute/modifie tes prestations
+- Crée un devis (combo de services)
+- Enregistre les prestations réalisées
+- Marque les devis acceptés/refusés
+
+### 📉 Dépenses
+**Quoi ?** Suivi financier de tes charges  
+**Quand ?** Pour enregistrer tes frais (fournitures, loyer, etc)  
+**Actions :**
+- Ajoute une dépense
+- Catégorise (fournitures, loyer, autres)
+- Vois ton bilan dépenses/revenus
+
+### 📋 Bilan
+**Quoi ?** Rapports mensuels complets  
+**Quand ?** En fin de mois ou pour analyser  
+**Actions :**
+- Génère un rapport du mois
+- Exporte en PDF
+- Compare les mois
+
+---
+
+## 💾 Données : Sauvegarde & Synchronisation
+
+### Automatic Save (défaut)
+- ✅ Tous tes changements se sauvegardent **instantanément** en local
+- ✅ Pas besoin de cliquer "Sauvegarder"
+- ✅ Fonctionne même sans Internet
+
+### Export tes données
+1. Va sur **⚙️ Paramètres**
+2. Clique **Télécharger mes données**
+3. Un fichier JSON se télécharge
+4. C'est ta copie de sécurité complète
+
+### Importe une sauvegarde
+1. Va sur **⚙️ Paramètres**
+2. Clique **Charger mes données**
+3. Sélectionne un fichier JSON sauvegardé
+4. Tes données se restaurent
+
+### Synchronisation Cloud (optionnel)
+Si tu veux accéder à tes données depuis plusieurs appareils :
+1. Va sur **⚙️ Paramètres**
+2. Configure Firebase
+3. Tes données se synchro en temps réel
+4. Accessible depuis n'importe quel appareil
+
+---
+
+## 📱 Mode PWA : Installer comme App Native
+
+### Sur iPhone 🍎
+1. Ouvre Safari
+2. Accède à ton lien de l'app
+3. Clique le bouton **Partage** (carré + flèche)
+4. Sélectionne **Ajouter à l'écran d'accueil**
+5. Nomme l'app → Ajoute
+
+→ L'app apparaît sur ton home screen comme une vraie app !
+
+### Sur Android 🤖
+1. Ouvre Chrome
+2. Accède à ton lien de l'app
+3. Clique le menu (⋮) en haut à droite
+4. Sélectionne **Installer l'application**
+5. Confirme
+
+→ L'app s'installe et fonctionne hors-ligne !
+
+### Sur Ordinateur 💻
+1. Ouvre Chrome
+2. Clique sur l'icône **+** en haut à gauche (adresse bar)
+3. Sélectionne **Installer l'application**
+
+→ L'app a son propre raccourci et peut fonctionner offline !
+
+---
+
+## ⚙️ Paramètres : Ce que tu Peux Faire
+
+| Paramètre | What | Why |
+|-----------|------|-----|
+| **Nom de l'app** | Change "Nails by Anna" | Personnaliser pour ton studio |
+| **Export données** | Télécharge un fichier JSON | Backup & migration |
+| **Import données** | Charge une sauvegarde | Restauration ou import |
+| **Firebase Config** | Configure cloud sync | Accès multi-appareils |
+| **Effacer tout** | Reset complètement | Recommencer à zéro |
+
+---
+
+## 🎓 Tips & Tricks
+
+### 💡 Organisez bien tes prestations
+- Groupe par catégorie (exemples : "Pose", "Vernis", "Art")
+- Définis des prix standard
+- Tu gagneras du temps en créant les devis
+
+### 💡 Les clients favoris
+- La première fois qu'un client revient = le Dashboard le détecte
+- Vois qui est ton client le plus rentable
+- Offre-lui une fidélité ! 🎁
+
+### 💡 Crée des templates de devis
+- Une prestation = 1 template
+- Quand tu fais un devis, ajoute les services
+- Les prix se calculent auto
+
+### 💡 Suivi mensuel
+- Enregistre **toutes** tes dépenses (fournitures, loyer, etc)
+- À la fin du mois, vois ton bilan exact
+- Ça t'aide pour ta comptabilité
+
+### 💡 Sur plusieurs appareils ?
+- Utilise l'export/import (simple, gratuit, offline)
+- Ou configure Firebase (synchro auto, mais nécessite une config)
+
+---
+
+## ❓ FAQ
+
+### Q : Mes données vont où ?
+**R :** Elles restent sur ton téléphone/ordinateur. Nowhere else, sauf si tu connectes Firebase.
+
+### Q : Je perds mes données si je ferme l'app ?
+**R :** Non ! Elles sont sauvegardées automatiquement en local. Tu les retrouves en rouvrant l'app.
+
+### Q : Ça marche sans Internet ?
+**R :** Oui ! Tout fonctionne offline. Firebase sync est optionnel.
+
+### Q : Comment je supprime un client ?
+**R :** Va sur **👥 Clients** → clique sur le client → bouton **Supprimer** (en bas).
+
+### Q : Je peux modifier une prestation enregistrée ?
+**R :** Oui, clique sur la prestation pour la modifier, puis **Modifier**.
+
+### Q : Comment exporter un PDF de mon bilan ?
+**R :** Va sur **📋 Bilan** → bouton **Exporter en PDF** (en haut du mois).
+
+### Q : Ça marche sur iPad ?
+**R :** Oui ! L'interface s'adapte automatiquement. Sur iPad, la navigation est optimisée.
+
+---
+
+## 🆘 Troubleshooting
+
+### L'app ne charge pas
+- **Solution :** Vide le cache (Ctrl+Shift+Delete) et recharge
+- **Sinon :** Essaie un autre navigateur
+
+### Mes données ont disparu
+- **Solution 1 :** Elles sont peut-être en cache. Vide le cache du navigateur
+- **Solution 2 :** Si tu as une sauvegarde JSON, importe-la via Paramètres
+
+### La synchronisation cloud ne marche pas
+- **Solution :** Vérifie ta connexion Internet
+- **Sinon :** Firebase config peut être mal renseignée. Contacte le support
+
+### Je veux réinitialiser l'app
+- Va sur **⚙️ Paramètres**
+- Clique **Réinitialiser tous les données**
+- Confirme
+
+---
+
+## 📚 Prochaines Étapes
+
+✅ Bravo ! Tu maîtrises les bases.
+
+Maintenant :
+1. **Ajoute tous tes clients** et tes prestations
+2. **Enregistre chaque prestation** réalisée
+3. **Consulte le dashboard** régulièrement
+4. **Exporte tes données** chaque semaine (backup)
+
+---
+
+**Besoin d'aide ?** Contacte-moi ou consulte les docs GitHub ! 📧
