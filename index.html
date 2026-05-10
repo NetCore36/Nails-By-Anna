@@ -1266,6 +1266,21 @@ button[onclick*="closeCaisseCheckout"] {
 
     <div style="height:1px;background:var(--parch2);margin-bottom:22px;"></div>
 
+    <!-- Objectif mensuel -->
+    <div style="margin-bottom:22px;">
+      <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px;font-weight:400;">Objectif mensuel</div>
+      <div class="fgroup" style="margin-bottom:8px;">
+        <label class="flabel">Objectif CA du mois</label>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <input class="finput" type="number" id="set-goal" placeholder="2000" inputmode="decimal" style="flex:1;">
+          <span style="font-size:13px;color:var(--ink2);white-space:nowrap;" id="set-goal-dev">CHF</span>
+        </div>
+      </div>
+      <button onclick="saveGoal()" style="padding:10px 20px;border:none;border-radius:10px;background:var(--ink);color:#fff;font-size:12px;font-family:var(--sans);cursor:pointer;letter-spacing:.06em;">Enregistrer</button>
+    </div>
+
+    <div style="height:1px;background:var(--parch2);margin-bottom:22px;"></div>
+
     <!-- Données -->
     <div style="margin-bottom:22px;">
       <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px;font-weight:400;">Données</div>
@@ -1998,7 +2013,7 @@ function rDash(){
 var dashTab = 'jour';
 var dashOffset = 0;
 var dashPeriod = {type:'month', m:NOW.getMonth(), y:NOW.getFullYear()};
-var GOAL_MONTH = 2000;
+var GOAL_MONTH = parseFloat(localStorage.getItem('nba5goal')) || 2000;
 
 function rDashAlways(){
   const dev=D();
@@ -3161,6 +3176,20 @@ function openSettings(){
   const ti=document.getElementById('taux-manual');
   if(ti) ti.value=TAUX_EUR_CHF.toFixed(4);
   updateTauxDisplay();
+  // Show current goal
+  const gi=document.getElementById('set-goal');
+  if(gi) gi.value=GOAL_MONTH;
+  const gd=document.getElementById('set-goal-dev');
+  if(gd) gd.textContent=DEVISE_PRINC||DEVISE;
+}
+
+function saveGoal(){
+  const v=parseFloat(document.getElementById('set-goal').value);
+  if(!v||v<=0)return;
+  GOAL_MONTH=v;
+  localStorage.setItem('nba5goal',v);
+  closeModal('modal-settings');
+  rDash();
 }
 
 function saveAppName(){
@@ -3205,7 +3234,7 @@ function exportData(){
 
 function confirmReset(){
   if(confirm('⚠️ Supprimer toutes les données ? Cette action est irréversible.')){
-    ['nba5p','nba5d','nba5c','nba5f','nba5rec','nba5rdv','nba5cats','nba5dev','nba5name'].forEach(k=>localStorage.removeItem(k));
+    ['nba5p','nba5d','nba5c','nba5f','nba5rec','nba5rdv','nba5cats','nba5dev','nba5name','nba5goal'].forEach(k=>localStorage.removeItem(k));
     location.reload();
   }
 }
