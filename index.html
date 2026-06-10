@@ -1333,6 +1333,12 @@ function inM(d,m,y){const t=new Date(d);return t.getMonth()===m&&t.getFullYear()
 function inY(d,y){return new Date(d).getFullYear()===y;}
 function cf(n){const v=Number(n);return (isNaN(v)?0:Math.round(v)).toLocaleString('fr-CH');}
 
+// Formate une date ISO (YYYY-MM-DD) en format européen JJ/MM/AAAA
+function fmtD(iso){
+  if(!iso||!/^\d{4}-\d{2}-\d{2}/.test(iso))return iso||'—';
+  const[y,m,d]=iso.slice(0,10).split('-');
+  return d+'/'+m+'/'+y;
+}
 function sv(){
   localStorage.setItem('nba5p',JSON.stringify(PS));
   localStorage.setItem('nba5d',JSON.stringify(DS));
@@ -1387,7 +1393,7 @@ function openPlanDetail(psId,rdvId){
   const endT=()=>{const[h,m]=r.heure.split(':').map(Number);const tot=h*60+m+r.dur;return`${String(Math.floor(tot/60)).padStart(2,'0')}:${String(tot%60).padStart(2,'0')}`;};
   document.getElementById('mp-title').textContent=r.cl;
   document.getElementById('mp-content').innerHTML=`
-    <div class="detail-row"><span class="detail-key">Date</span><span class="detail-val">${r.date}</span></div>
+    <div class="detail-row"><span class="detail-key">Date</span><span class="detail-val">${fmtD(r.date)}</span></div>
     <div class="detail-row"><span class="detail-key">Horaire</span><span class="detail-val">${r.heure} → ${endT()} (${r.dur} min)</span></div>
     <div class="detail-row"><span class="detail-key">Prestation</span><span class="detail-val">${prests}</span></div>
     <div class="detail-row"><span class="detail-key">Prix</span><span class="detail-val">${r.prix} ${D()}</span></div>
@@ -1589,7 +1595,7 @@ function saveModal(){
 }
 
 // ─── CATALOGUE PRESTATIONS ───
-const CATALOGUE=[
+const CATALOGUE_DEFAUT=[
   {nom:'Pose complète sans extension',prix:110,dur:105},
   {nom:'Pose complète avec extension',prix:135,dur:135},
   {nom:'Pose complète longue',prix:150,dur:150},
@@ -1602,6 +1608,22 @@ const CATALOGUE=[
   {nom:'Dépose semi + manucure',prix:45,dur:45},
   {nom:'Supplément déco',prix:15,dur:15},
 ];
+const CATALOGUE=[...CATALOGUE_DEFAUT];
+// Restaurer les prestations personnalisées sauvegardées
+(JSON.parse(localStorage.getItem('nba5cust')||'[]')).forEach(c=>{
+  if(c&&c.nom&&!CATALOGUE.some(x=>x.nom.toLowerCase()===c.nom.toLowerCase()))
+    CATALOGUE.push({nom:c.nom,prix:c.prix,dur:c.dur||60});
+});
+function saveCustomCatalogue(){
+  const customs=CATALOGUE.filter(c=>!CATALOGUE_DEFAUT.some(d=>d.nom.toLowerCase()===c.nom.toLowerCase()));
+  localStorage.setItem('nba5cust',JSON.stringify(customs));
+}
+function addToCatalogue(nom,prix){
+  if(CATALOGUE.some(c=>c.nom.toLowerCase()===nom.toLowerCase()))return;
+  CATALOGUE.push({nom,prix,dur:60});
+  saveCustomCatalogue();
+  buildPrestMenu();
+}
 let BASKET={}; // {nom: {prix, qty}}
 
 function buildPrestMenu(){
@@ -1759,7 +1781,7 @@ function openPrestaDetail(id){
     : '';
   document.getElementById('mp-content').innerHTML=`
     <div class="detail-row"><span class="detail-key">Prestation</span><span class="detail-val">${p.nom}</span></div>
-    <div class="detail-row"><span class="detail-key">Date</span><span class="detail-val">${p.date}${p.heure?' · '+p.heure:''}</span></div>
+    <div class="detail-row"><span class="detail-key">Date</span><span class="detail-val">${fmtD(p.date)}${p.heure?' · '+p.heure:''}</span></div>
     <div class="detail-row"><span class="detail-key">Montant</span><span class="detail-val" style="font-family:var(--serif);font-size:18px;color:var(--blush)">${p.prix} ${p.dev||D()}</span></div>
     <div class="detail-row"><span class="detail-key">Paiement</span><span class="detail-val">${payLabel}</span></div>
     <div class="detail-row"><span class="detail-key">Statut</span><span class="detail-val"><span class="pill ${p.stat==='payé'?'p-ok':'p-ko'}">${p.stat}</span>${p.ghost?' <span class="pill" style="background:#eee;color:#555;">👻 black</span>':''}</span></div>
@@ -1852,9 +1874,9 @@ function savePrestaEdit(){
   p.stat=document.getElementById('ep-stat').value;
   p.ghost=document.getElementById('ep-ghost-val').value==='1';
   sv();
-  rPlist();rDash();
-  openPrestaDetail(currentPrestaId);
+  closeModal('modal-presta'); // ferme le pop-up immédiatement, avant les rafraîchissements
   showToast('✓ Prestation modifiée');
+  rPlist();rDash();
 }
 
 // ─── DÉPENSE MODAL ───
@@ -1877,7 +1899,7 @@ function openDepDetail(id){
     : '';
   document.getElementById('md-content').innerHTML=`
     <div class="detail-row"><span class="detail-key">Catégorie</span><span class="detail-val">${d.cat}</span></div>
-    <div class="detail-row"><span class="detail-key">Date</span><span class="detail-val">${d.date}</span></div>
+    <div class="detail-row"><span class="detail-key">Date</span><span class="detail-val">${fmtD(d.date)}</span></div>
     <div class="detail-row"><span class="detail-key">Montant total</span><span class="detail-val" style="font-family:var(--serif);color:var(--blush)">${d.m} ${dev}</span></div>
     ${d.fac?`<div class="detail-row"><span class="detail-key">Facture</span><span class="detail-val">${d.fac}</span></div>`:''}
     ${artsHtml}
@@ -2300,7 +2322,7 @@ function rPlist(){
   if(!L.length){el.innerHTML='<div class="empty"><div class="empty-dash"></div><div class="empty-txt">Aucune prestation</div></div>';return;}
   el.innerHTML=L.map(p=>`<div class="row" onclick="openPrestaDetail(${p.id})">
     <div class="row-bar" style="background:${p.ghost?'#555':p.pay==='ESP'?'#8A6830':p.pay==='VIR'?'#7A9E8A':'#C8736A'}"></div>
-    <div class="row-body"><div class="row-name">${p.ghost?'👻 ':''}${p.cl}</div><div class="row-meta">${p.nom} · ${p.date} · ${p.pay==='CB'?'Carte':p.pay==='VIR'?'Virement':'Espèces'}</div></div>
+    <div class="row-body"><div class="row-name">${p.ghost?'👻 ':''}${p.cl}</div><div class="row-meta">${p.nom} · ${fmtD(p.date)} · ${p.pay==='CB'?'Carte':p.pay==='VIR'?'Virement':'Espèces'}</div></div>
     <div class="row-right"><span class="row-price">${p.prix} ${p.dev||D()}</span><span class="pill ${p.stat==='payé'?'p-ok':'p-ko'}">${p.stat}</span></div>
   </div>`).join('');
   rPCharts(L);
@@ -2308,7 +2330,8 @@ function rPlist(){
 
 function rPCharts(L){
   const wrap=document.getElementById('pcharts');
-  if(!L||!L.length){if(wrap)wrap.style.display='none';return;}
+  if(!wrap)return; // section graphiques absente du DOM : ne rien faire
+  if(!L||!L.length){wrap.style.display='none';return;}
   wrap.style.display='flex';
   const blush='#C8736A',sage='#8FAF8A',cream='#E8C9A0',ink3='#A09890';
   const chartOpts={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:i=>i.formattedValue+' '+D()}}}};
@@ -2369,7 +2392,7 @@ function rDlist(){
   if(!filt.length){el.innerHTML='<div class="empty"><div class="empty-dash"></div><div class="empty-txt">Aucune dépense</div></div>';return;}
   el.innerHTML=filt.map(d=>`<div class="row" onclick="openDepDetail(${d.id})">
     <div class="row-bar" style="background:#8A6830"></div>
-    <div class="row-body"><div class="row-name">${d.auto?'🔄 ':''}${d.f}</div><div class="row-meta">${d.cat}${d.fac?' · '+d.fac:''} · ${d.date}</div></div>
+    <div class="row-body"><div class="row-name">${d.auto?'🔄 ':''}${d.f}</div><div class="row-meta">${d.cat}${d.fac?' · '+d.fac:''} · ${fmtD(d.date)}</div></div>
     <div class="row-right"><span class="row-price" style="color:var(--blush)">${d.m} ${d.dev||D()}</span></div>
   </div>`).join('');
 }
@@ -2528,7 +2551,7 @@ function rClients(){
   if(!clients.length){el.innerHTML='<div class="empty"><div class="empty-dash"></div><div class="empty-txt">Aucune cliente trouvée</div></div>';return;}
   el.innerHTML=clients.map((c,i)=>{
     const hist=c.pr.slice(0,5).map(p=>`<div class="cl-hist-row" onclick="event.stopPropagation();openPrestaDetail(${p.id})">
-      <div><div style="font-size:13px;color:var(--ink2)">${p.nom}</div><div style="font-size:11px;color:var(--ink3);margin-top:1px">${p.date} · ${p.pay==='CB'?'Carte':p.pay==='VIR'?'Virement':'Espèces'}</div></div>
+      <div><div style="font-size:13px;color:var(--ink2)">${p.nom}</div><div style="font-size:11px;color:var(--ink3);margin-top:1px">${fmtD(p.date)} · ${p.pay==='CB'?'Carte':p.pay==='VIR'?'Virement':'Espèces'}</div></div>
       <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:13px;font-family:var(--serif)">${p.prix} ${p.dev||D()}</span><span class="pill ${p.stat==='payé'?'p-ok':'p-ko'}">${p.stat}</span></div>
     </div>`).join('');
     const delBtn=c.rid?`<button class="cl-del-btn" onclick="event.stopPropagation();delC(${c.rid})">Supprimer la fiche</button>`:'';
@@ -2603,7 +2626,7 @@ function rFourn(){
     const cats=[...f.cats].join(', ')||'—';
     const rows=(f.rows||[]).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
     const hist=rows.map(d=>`<div class="cl-hist-row" onclick="event.stopPropagation();openDepDetail(${d.id})">
-      <div><div style="font-size:13px;color:var(--ink2)">${d.cat}${d.fac?' · '+d.fac:''}</div><div style="font-size:11px;color:var(--ink3);margin-top:1px">${d.date}</div></div>
+      <div><div style="font-size:13px;color:var(--ink2)">${d.cat}${d.fac?' · '+d.fac:''}</div><div style="font-size:11px;color:var(--ink3);margin-top:1px">${fmtD(d.date)}</div></div>
       <span style="font-size:13px;font-family:var(--serif)">${cf(d.m)} ${D()}</span>
     </div>`).join('');
     const delBtn=f.fid?`<button class="cl-del-btn" onclick="event.stopPropagation();delFourn(${f.fid})">Supprimer la fiche</button>`:'';
@@ -3563,6 +3586,7 @@ function confirmNewPresta() {
   if(!nom) { document.getElementById('np-nom').focus(); return; }
   if(isNaN(prix) || prix <= 0) { document.getElementById('np-prix').focus(); return; }
   closeNewPrestaModal();
+  addToCatalogue(nom, prix); // mémorise la prestation pour les prochaines fois
   caisseAddItem(nom, prix);
 }
 
@@ -3761,7 +3785,7 @@ function genExcelFiduciaire(){
 
   // Génère CSV avec séparateur point-virgule (compatible Excel FR)
   const moisFR = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-  const rows = [headers, ...lignes.map(r => [r[0], moisFR[r[1]-1], r[2], r[3], r[4], String(r[5]).replace('.',','), r[6]])];
+  const rows = [headers, ...lignes.map(r => [r[0], moisFR[r[1]-1], fmtD(r[2]), r[3], r[4], String(r[5]).replace('.',','), r[6]])];
   const csv = '\uFEFF' + rows.map(r => r.map(v => '"'+String(v).replace(/"/g,'""')+'"').join(';')).join('\r\n');
 
   const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
